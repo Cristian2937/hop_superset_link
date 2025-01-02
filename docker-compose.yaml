@@ -1,0 +1,36 @@
+services:
+  apache-hop:
+    extends:
+      file: ./docker_foundation/hop/docker-compose.yaml
+      service: apache-hop
+    volumes:
+      - ./hop-project/config:/opt/hop/hop/config_host/
+      - ./jdbc-drivers/:/opt/hop/hop/lib/jdbc/
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      - DISPLAY=${DISPLAY}
+    networks:
+      - dwh_network
+
+  postgres_superset_link:
+    extends:
+      file: ./docker_foundation/postgres/docker-compose.yaml
+      service: postgres_superset_link
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - dwh_network
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "user", "-d", "dwh", "-h", "localhost", "-p", "5432"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 5s
+
+volumes:
+  postgres_data:
+
+networks:
+  dwh_network:
+    external: true
+    name: dwh_network
