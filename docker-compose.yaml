@@ -10,7 +10,7 @@ services:
     environment:
       - DISPLAY=${DISPLAY}
     networks:
-      - dwh_network
+      - superset_link_network
 
   postgres_superset_link:
     extends:
@@ -19,7 +19,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - dwh_network
+      - superset_link_network
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "user", "-d", "dwh", "-h", "localhost", "-p", "5432"]
       interval: 10s
@@ -31,6 +31,6 @@ volumes:
   postgres_data:
 
 networks:
-  dwh_network:
+  superset_link_network:
     external: true
-    name: dwh_network
+    name: superset_link_network
