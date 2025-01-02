@@ -246,7 +246,9 @@
     "LineWidth" : "1",
     "ContextDialogShowCategories" : "Y",
     "ContextDialogFixedWidth" : "Y",
-    "AutoSave" : "Y"
+    "AutoSave" : "Y",
+    "CustomParameterMergeJoinSortWarning" : "N",
+    "CustomParameterUniqueSortWarning" : "N"
   },
   "googleDrive" : {
     "credentialsFile" : null,
