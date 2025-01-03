@@ -71,13 +71,18 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Fake data</from>
-      <to>Unique rows</to>
+      <from>Unique rows</from>
+      <to>(SR) SPICE_NAME</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Unique rows</from>
-      <to>(SR) SPICE_NAME</to>
+      <from>Fake data</from>
+      <to>Sort rows</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Sort rows</from>
+      <to>Unique rows</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -94,7 +99,7 @@
     </partitioning>
     <join_type>FULL OUTER</join_type>
     <keys_1>
-      <key>SPICE_NAME_1</key>
+      <key>SPICE_NAME</key>
     </keys_1>
     <keys_2>
       <key>spezia_lookup</key>
@@ -103,7 +108,7 @@
     <transform2>(SR) spezia_LU</transform2>
     <attributes/>
     <GUI>
-      <xloc>1088</xloc>
+      <xloc>1232</xloc>
       <yloc>272</yloc>
     </GUI>
   </transform>
@@ -133,7 +138,7 @@
             <conditions>
 </conditions>
             <function>IS NULL</function>
-            <leftvalue>SPICE_NAME_1</leftvalue>
+            <leftvalue>SPICE_NAME</leftvalue>
             <negated>N</negated>
             <operator>AND</operator>
           </condition>
@@ -147,7 +152,7 @@
     <send_true_to>Delete</send_true_to>
     <attributes/>
     <GUI>
-      <xloc>1392</xloc>
+      <xloc>1536</xloc>
       <yloc>112</yloc>
     </GUI>
   </transform>
@@ -177,7 +182,7 @@
             <conditions>
 </conditions>
             <function>IS NOT NULL</function>
-            <leftvalue>SPICE_NAME_1</leftvalue>
+            <leftvalue>SPICE_NAME</leftvalue>
             <negated>N</negated>
             <operator>AND</operator>
           </condition>
@@ -192,7 +197,7 @@
     <send_true_to>Insert</send_true_to>
     <attributes/>
     <GUI>
-      <xloc>1264</xloc>
+      <xloc>1408</xloc>
       <yloc>272</yloc>
     </GUI>
   </transform>
@@ -222,7 +227,7 @@
             <conditions>
 </conditions>
             <function>IS NOT NULL</function>
-            <leftvalue>SPICE_NAME_1</leftvalue>
+            <leftvalue>SPICE_NAME</leftvalue>
             <negated>N</negated>
             <operator>AND</operator>
           </condition>
@@ -237,7 +242,7 @@
     <send_true_to>Update</send_true_to>
     <attributes/>
     <GUI>
-      <xloc>1328</xloc>
+      <xloc>1472</xloc>
       <yloc>192</yloc>
     </GUI>
   </transform>
@@ -261,7 +266,7 @@
     <unique_rows>N</unique_rows>
     <fields>
       <field>
-        <name>SPICE_NAME_1</name>
+        <name>SPICE_NAME</name>
         <ascending>Y</ascending>
         <case_sensitive>N</case_sensitive>
         <collator_enabled>N</collator_enabled>
@@ -271,7 +276,7 @@
     </fields>
     <attributes/>
     <GUI>
-      <xloc>944</xloc>
+      <xloc>1056</xloc>
       <yloc>272</yloc>
     </GUI>
   </transform>
@@ -305,7 +310,7 @@
     </fields>
     <attributes/>
     <GUI>
-      <xloc>1088</xloc>
+      <xloc>1232</xloc>
       <yloc>144</yloc>
     </GUI>
   </transform>
@@ -330,7 +335,7 @@ FROM d_spezia</sql>
     <variables_active>N</variables_active>
     <attributes/>
     <GUI>
-      <xloc>1088</xloc>
+      <xloc>1232</xloc>
       <yloc>32</yloc>
     </GUI>
   </transform>
@@ -358,7 +363,7 @@ FROM d_spezia</sql>
     </lookup>
     <attributes/>
     <GUI>
-      <xloc>1536</xloc>
+      <xloc>1680</xloc>
       <yloc>112</yloc>
     </GUI>
   </transform>
@@ -375,7 +380,7 @@ FROM d_spezia</sql>
     </partitioning>
     <fields>
       <field>
-        <name>SPICE_NAME_1</name>
+        <name>SPICE_NAME</name>
         <topic>spice</topic>
         <type>Food</type>
       </field>
@@ -429,55 +434,21 @@ FROM d_spezia</sql>
         <condition>=</condition>
         <field>id</field>
         <name>id_lookup</name>
+        <name2/>
       </key>
       <schema>public</schema>
       <table>d_spezia</table>
       <value>
         <name>spezia</name>
-        <rename>SPICE_NAME_1</rename>
+        <rename>SPICE_NAME</rename>
         <update>N</update>
       </value>
     </lookup>
     <update_bypassed>Y</update_bypassed>
     <attributes/>
     <GUI>
-      <xloc>1408</xloc>
+      <xloc>1552</xloc>
       <yloc>272</yloc>
-    </GUI>
-  </transform>
-  <transform>
-    <name>Update</name>
-    <type>Update</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <commit>1000</commit>
-    <connection>SUPERSET_POSTGRES_LINK</connection>
-    <error_ignored>N</error_ignored>
-    <lookup>
-      <key>
-        <condition>=</condition>
-        <field>id</field>
-        <name>id_lookup</name>
-      </key>
-      <schema>public</schema>
-      <table>d_spezia</table>
-      <value>
-        <name>spezia</name>
-        <rename>SPICE_NAME_1</rename>
-      </value>
-    </lookup>
-    <skip_lookup>N</skip_lookup>
-    <use_batch>N</use_batch>
-    <attributes/>
-    <GUI>
-      <xloc>1488</xloc>
-      <yloc>192</yloc>
     </GUI>
   </transform>
   <transform>
@@ -497,10 +468,81 @@ FROM d_spezia</sql>
     <fields>
       <field>
         <case_insensitive>Y</case_insensitive>
-        <name>SPICE_NAME_1</name>
+        <name>SPICE_NAME</name>
       </field>
     </fields>
     <reject_duplicate_row>N</reject_duplicate_row>
+    <attributes/>
+    <GUI>
+      <xloc>912</xloc>
+      <yloc>272</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Update</name>
+    <type>Update</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <commit>1000</commit>
+    <connection>SUPERSET_POSTGRES_LINK</connection>
+    <error_ignored>N</error_ignored>
+    <ignore_flag_field/>
+    <lookup>
+      <key>
+        <condition>=</condition>
+        <field>id</field>
+        <name>id_lookup</name>
+        <name2/>
+      </key>
+      <schema>public</schema>
+      <table>d_spezia</table>
+      <value>
+        <name>spezia</name>
+        <rename>SPICE_NAME</rename>
+      </value>
+    </lookup>
+    <skip_lookup>N</skip_lookup>
+    <use_batch>N</use_batch>
+    <attributes/>
+    <GUI>
+      <xloc>1632</xloc>
+      <yloc>192</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Sort rows</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <directory>${java.io.tmpdir}</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory/>
+    <compress>N</compress>
+    <compress_variable/>
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>SPICE_NAME</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
     <attributes/>
     <GUI>
       <xloc>800</xloc>

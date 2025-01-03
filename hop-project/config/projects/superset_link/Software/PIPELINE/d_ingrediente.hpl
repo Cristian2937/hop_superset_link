@@ -27,16 +27,16 @@
     </hop>
     <hop>
       <from>(SR) FOOD_INGREDIENT</from>
-      <to>Merge join</to>
+      <to>(FO-MJ) INGREDIENTE</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
       <from>(SR) INGREDIENTE_LU</from>
-      <to>Merge join</to>
+      <to>(FO-MJ) INGREDIENTE</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Merge join</from>
+      <from>(FO-MJ) INGREDIENTE</from>
       <to>(FR) INS</to>
       <enabled>Y</enabled>
     </hop>
@@ -71,11 +71,47 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Fake data</from>
+      <from>Unique rows</from>
       <to>(SR) FOOD_INGREDIENT</to>
       <enabled>Y</enabled>
     </hop>
+    <hop>
+      <from>Fake data</from>
+      <to>Sort rows</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Sort rows</from>
+      <to>Unique rows</to>
+      <enabled>Y</enabled>
+    </hop>
   </order>
+  <transform>
+    <name>(FO-MJ) INGREDIENTE</name>
+    <type>MergeJoin</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <join_type>FULL OUTER</join_type>
+    <keys_1>
+      <key>FOOD_INGREDIENT</key>
+    </keys_1>
+    <keys_2>
+      <key>ingrediente_lookup</key>
+    </keys_2>
+    <transform1>(SR) FOOD_INGREDIENT</transform1>
+    <transform2>(SR) INGREDIENTE_LU</transform2>
+    <attributes/>
+    <GUI>
+      <xloc>1376</xloc>
+      <yloc>384</yloc>
+    </GUI>
+  </transform>
   <transform>
     <name>(FR) DEL</name>
     <type>FilterRows</type>
@@ -116,7 +152,7 @@
     <send_true_to>Delete</send_true_to>
     <attributes/>
     <GUI>
-      <xloc>1344</xloc>
+      <xloc>1616</xloc>
       <yloc>224</yloc>
     </GUI>
   </transform>
@@ -161,7 +197,7 @@
     <send_true_to>Insert</send_true_to>
     <attributes/>
     <GUI>
-      <xloc>1264</xloc>
+      <xloc>1536</xloc>
       <yloc>384</yloc>
     </GUI>
   </transform>
@@ -206,7 +242,7 @@
     <send_true_to>Update</send_true_to>
     <attributes/>
     <GUI>
-      <xloc>1296</xloc>
+      <xloc>1568</xloc>
       <yloc>304</yloc>
     </GUI>
   </transform>
@@ -240,7 +276,7 @@
     </fields>
     <attributes/>
     <GUI>
-      <xloc>944</xloc>
+      <xloc>1168</xloc>
       <yloc>384</yloc>
     </GUI>
   </transform>
@@ -274,7 +310,7 @@
     </fields>
     <attributes/>
     <GUI>
-      <xloc>1104</xloc>
+      <xloc>1376</xloc>
       <yloc>256</yloc>
     </GUI>
   </transform>
@@ -299,7 +335,7 @@ FROM d_ingrediente</sql>
     <variables_active>N</variables_active>
     <attributes/>
     <GUI>
-      <xloc>1104</xloc>
+      <xloc>1376</xloc>
       <yloc>144</yloc>
     </GUI>
   </transform>
@@ -327,7 +363,7 @@ FROM d_ingrediente</sql>
     </lookup>
     <attributes/>
     <GUI>
-      <xloc>1488</xloc>
+      <xloc>1760</xloc>
       <yloc>224</yloc>
     </GUI>
   </transform>
@@ -352,7 +388,7 @@ FROM d_ingrediente</sql>
     <locale>en</locale>
     <attributes/>
     <GUI>
-      <xloc>752</xloc>
+      <xloc>720</xloc>
       <yloc>384</yloc>
     </GUI>
   </transform>
@@ -410,13 +446,13 @@ FROM d_ingrediente</sql>
     <update_bypassed>Y</update_bypassed>
     <attributes/>
     <GUI>
-      <xloc>1392</xloc>
+      <xloc>1664</xloc>
       <yloc>384</yloc>
     </GUI>
   </transform>
   <transform>
-    <name>Merge join</name>
-    <type>MergeJoin</type>
+    <name>Sort rows</name>
+    <type>SortRows</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -425,18 +461,51 @@ FROM d_ingrediente</sql>
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <join_type>FULL OUTER</join_type>
-    <keys_1>
-      <key>FOOD_INGREDIENT</key>
-    </keys_1>
-    <keys_2>
-      <key>ingrediente_lookup</key>
-    </keys_2>
-    <transform1>(SR) FOOD_INGREDIENT</transform1>
-    <transform2>(SR) INGREDIENTE_LU</transform2>
+    <directory>${java.io.tmpdir}</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory/>
+    <compress>N</compress>
+    <compress_variable/>
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>FOOD_INGREDIENT</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
     <attributes/>
     <GUI>
-      <xloc>1104</xloc>
+      <xloc>848</xloc>
+      <yloc>384</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Unique rows</name>
+    <type>Unique</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <count_rows>N</count_rows>
+    <fields>
+      <field>
+        <case_insensitive>Y</case_insensitive>
+        <name>FOOD_INGREDIENT</name>
+      </field>
+    </fields>
+    <reject_duplicate_row>N</reject_duplicate_row>
+    <attributes/>
+    <GUI>
+      <xloc>992</xloc>
       <yloc>384</yloc>
     </GUI>
   </transform>
@@ -454,13 +523,11 @@ FROM d_ingrediente</sql>
     <commit>1000</commit>
     <connection>SUPERSET_POSTGRES_LINK</connection>
     <error_ignored>N</error_ignored>
-    <ignore_flag_field/>
     <lookup>
       <key>
         <condition>=</condition>
         <field>id</field>
         <name>id_lookup</name>
-        <name2/>
       </key>
       <schema>public</schema>
       <table>d_ingrediente</table>
@@ -473,7 +540,7 @@ FROM d_ingrediente</sql>
     <use_batch>N</use_batch>
     <attributes/>
     <GUI>
-      <xloc>1440</xloc>
+      <xloc>1712</xloc>
       <yloc>304</yloc>
     </GUI>
   </transform>
