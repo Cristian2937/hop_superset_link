@@ -1,0 +1,1031 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pipeline>
+  <info>
+    <name>f_pietanze</name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description/>
+    <extended_description/>
+    <pipeline_version/>
+    <pipeline_type>Normal</pipeline_type>
+    <parameters>
+    </parameters>
+    <capture_transform_performance>N</capture_transform_performance>
+    <transform_performance_capturing_delay>1000</transform_performance_capturing_delay>
+    <transform_performance_capturing_size_limit>100</transform_performance_capturing_size_limit>
+    <created_user>-</created_user>
+    <created_date>2025/01/03 15:50:07.536</created_date>
+    <modified_user>-</modified_user>
+    <modified_date>2025/01/03 15:50:07.536</modified_date>
+  </info>
+  <notepads>
+  </notepads>
+  <order>
+    <hop>
+      <from>Generate rows</from>
+      <to>Fake data</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Fake data</from>
+      <to>(SR) INGREDIENT</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>D_ingrediente</from>
+      <to>(SR) ingrediente_LU</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>(SR) ingrediente_LU</from>
+      <to>(LO-MJ) INGREDIENTE</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>(SR) INGREDIENT</from>
+      <to>(LO-MJ) INGREDIENTE</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>(SR) Quantita_LU</from>
+      <to>(LO-MJ) QUANTITA</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>D_quantita</from>
+      <to>(SR) Quantita_LU</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>(SR) Spezia_LU</from>
+      <to>(LO-MJ) SPEZIA</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>D_spezia</from>
+      <to>(SR) Spezia_LU</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>(LO-MJ) INGREDIENTE</from>
+      <to>(SR) QUANTITY</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>(LO-MJ) QUANTITA</from>
+      <to>(SR) SPICE</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>(SR) SPICE</from>
+      <to>(LO-MJ) SPEZIA</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>(SR) QUANTITY</from>
+      <to>(LO-MJ) QUANTITA</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>(LO-MJ) SPEZIA</from>
+      <to>(SR) LU INGREDIENTI</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>(SR) LU INGREDIENTI</from>
+      <to>Merge join</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>(SR) INGREDIENTI LU</from>
+      <to>Merge join</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>F_pietanze</from>
+      <to>(SR) INGREDIENTI LU</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Merge join</from>
+      <to>(FR) INS</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>(FR) INS</from>
+      <to>(FR) UPD</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>(FR) UPD</from>
+      <to>(FR) DEL</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>(FR) INS</from>
+      <to>Insert</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>(FR) UPD</from>
+      <to>Update</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>(FR) DEL</from>
+      <to>Delete</to>
+      <enabled>Y</enabled>
+    </hop>
+  </order>
+  <transform>
+    <name>(FR) DEL</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compare>
+      <condition>
+        <conditions>
+          <condition>
+            <conditions>
+</conditions>
+            <function>IS NOT NULL</function>
+            <leftvalue>id_lookup</leftvalue>
+            <negated>N</negated>
+            <operator>-</operator>
+          </condition>
+          <condition>
+            <conditions>
+</conditions>
+            <function>IS NULL</function>
+            <leftvalue>INGREDIENT_NAME</leftvalue>
+            <negated>N</negated>
+            <operator>AND</operator>
+          </condition>
+          <condition>
+            <conditions>
+</conditions>
+            <function>IS NULL</function>
+            <leftvalue>SPICE_NAME</leftvalue>
+            <negated>N</negated>
+            <operator>AND</operator>
+          </condition>
+          <condition>
+            <conditions>
+</conditions>
+            <function>IS NULL</function>
+            <leftvalue>QUANTITY</leftvalue>
+            <negated>N</negated>
+            <operator>AND</operator>
+          </condition>
+        </conditions>
+        <function>IS NULL</function>
+        <leftvalue>id_lookup</leftvalue>
+        <negated>N</negated>
+        <operator>-</operator>
+      </condition>
+    </compare>
+    <send_true_to>Delete</send_true_to>
+    <attributes/>
+    <GUI>
+      <xloc>2320</xloc>
+      <yloc>224</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>(FR) INS</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compare>
+      <condition>
+        <conditions>
+          <condition>
+            <conditions>
+</conditions>
+            <function>IS NULL</function>
+            <leftvalue>id_lookup</leftvalue>
+            <negated>N</negated>
+            <operator>-</operator>
+          </condition>
+          <condition>
+            <conditions>
+</conditions>
+            <function>IS NOT NULL</function>
+            <leftvalue>INGREDIENT_NAME</leftvalue>
+            <negated>N</negated>
+            <operator>AND</operator>
+          </condition>
+          <condition>
+            <conditions>
+</conditions>
+            <function>IS NOT NULL</function>
+            <leftvalue>SPICE_NAME</leftvalue>
+            <negated>N</negated>
+            <operator>AND</operator>
+          </condition>
+          <condition>
+            <conditions>
+</conditions>
+            <function>IS NOT NULL</function>
+            <leftvalue>QUANTITY</leftvalue>
+            <negated>N</negated>
+            <operator>AND</operator>
+          </condition>
+        </conditions>
+        <function>IS NULL</function>
+        <leftvalue>id_lookup</leftvalue>
+        <negated>N</negated>
+        <operator>-</operator>
+      </condition>
+    </compare>
+    <send_false_to>(FR) UPD</send_false_to>
+    <send_true_to>Insert</send_true_to>
+    <attributes/>
+    <GUI>
+      <xloc>2160</xloc>
+      <yloc>416</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>(FR) UPD</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compare>
+      <condition>
+        <conditions>
+          <condition>
+            <conditions>
+</conditions>
+            <function>IS NOT NULL</function>
+            <leftvalue>id_lookup</leftvalue>
+            <negated>N</negated>
+            <operator>-</operator>
+          </condition>
+          <condition>
+            <conditions>
+</conditions>
+            <function>IS NOT NULL</function>
+            <leftvalue>INGREDIENT_NAME</leftvalue>
+            <negated>N</negated>
+            <operator>AND</operator>
+          </condition>
+          <condition>
+            <conditions>
+</conditions>
+            <function>IS NOT NULL</function>
+            <leftvalue>SPICE_NAME</leftvalue>
+            <negated>N</negated>
+            <operator>AND</operator>
+          </condition>
+          <condition>
+            <conditions>
+</conditions>
+            <function>IS NOT NULL</function>
+            <leftvalue>QUANTITY</leftvalue>
+            <negated>N</negated>
+            <operator>AND</operator>
+          </condition>
+        </conditions>
+        <function>IS NULL</function>
+        <leftvalue>id_lookup</leftvalue>
+        <negated>N</negated>
+        <operator>-</operator>
+      </condition>
+    </compare>
+    <send_false_to>(FR) DEL</send_false_to>
+    <send_true_to>Update</send_true_to>
+    <attributes/>
+    <GUI>
+      <xloc>2240</xloc>
+      <yloc>320</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>(LO-MJ) INGREDIENTE</name>
+    <type>MergeJoin</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <join_type>LEFT OUTER</join_type>
+    <keys_1>
+      <key>INGREDIENT_NAME</key>
+    </keys_1>
+    <keys_2>
+      <key>ingrediente_lookup</key>
+    </keys_2>
+    <transform1>(SR) INGREDIENT</transform1>
+    <transform2>(SR) ingrediente_LU</transform2>
+    <attributes/>
+    <GUI>
+      <xloc>928</xloc>
+      <yloc>416</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>(LO-MJ) QUANTITA</name>
+    <type>MergeJoin</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <join_type>LEFT OUTER</join_type>
+    <keys_1>
+      <key>QUANTITY</key>
+    </keys_1>
+    <keys_2>
+      <key>quantita_lookup</key>
+    </keys_2>
+    <transform1>(SR) QUANTITY</transform1>
+    <transform2>(SR) Quantita_LU</transform2>
+    <attributes/>
+    <GUI>
+      <xloc>1264</xloc>
+      <yloc>416</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>(LO-MJ) SPEZIA</name>
+    <type>MergeJoin</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <join_type>LEFT OUTER</join_type>
+    <keys_1>
+      <key>SPICE_NAME</key>
+    </keys_1>
+    <keys_2>
+      <key>spezia_lookup</key>
+    </keys_2>
+    <transform1>(SR) SPICE</transform1>
+    <transform2>(SR) Spezia_LU</transform2>
+    <attributes/>
+    <GUI>
+      <xloc>1616</xloc>
+      <yloc>416</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>(SR) INGREDIENT</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <directory>${java.io.tmpdir}</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory/>
+    <compress>N</compress>
+    <compress_variable/>
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>INGREDIENT_NAME</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>752</xloc>
+      <yloc>416</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>(SR) INGREDIENTI LU</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <directory>${java.io.tmpdir}</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory/>
+    <compress>N</compress>
+    <compress_variable/>
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>id_ingrediente_postgres</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+      <field>
+        <name>id_quantita_postgres</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+      <field>
+        <name>id_spezia_postgres</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>1984</xloc>
+      <yloc>304</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>(SR) LU INGREDIENTI</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <directory>${java.io.tmpdir}</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory/>
+    <compress>N</compress>
+    <compress_variable/>
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>id_ingrediente_lookup</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+      <field>
+        <name>id_quantita_lookup</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+      <field>
+        <name>id_spezia_lookup</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>1808</xloc>
+      <yloc>416</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>(SR) QUANTITY</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <directory>${java.io.tmpdir}</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory/>
+    <compress>N</compress>
+    <compress_variable/>
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>QUANTITY</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>1104</xloc>
+      <yloc>416</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>(SR) Quantita_LU</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <directory>${java.io.tmpdir}</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory/>
+    <compress>N</compress>
+    <compress_variable/>
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>quantita_lookup</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>1264</xloc>
+      <yloc>304</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>(SR) SPICE</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <directory>${java.io.tmpdir}</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory/>
+    <compress>N</compress>
+    <compress_variable/>
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>SPICE_NAME</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>1440</xloc>
+      <yloc>416</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>(SR) Spezia_LU</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <directory>${java.io.tmpdir}</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory/>
+    <compress>N</compress>
+    <compress_variable/>
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>spezia_lookup</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>1616</xloc>
+      <yloc>304</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>(SR) ingrediente_LU</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <directory>${java.io.tmpdir}</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory/>
+    <compress>N</compress>
+    <compress_variable/>
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>ingrediente_lookup</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>928</xloc>
+      <yloc>304</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>D_ingrediente</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>SUPERSET_POSTGRES_LINK</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT 
+	id		as id_ingrediente_lookup
+,	ingrediente	as ingrediente_lookup
+FROM d_ingrediente</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>928</xloc>
+      <yloc>208</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>D_quantita</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>SUPERSET_POSTGRES_LINK</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT
+	id		as id_quantita_lookup
+,	quantita	as quantita_lookup
+FROM d_quantita</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>1264</xloc>
+      <yloc>208</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>D_spezia</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>SUPERSET_POSTGRES_LINK</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT 
+	id		as id_spezia_lookup
+,	spezia		as spezia_lookup
+FROM d_spezia</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>1616</xloc>
+      <yloc>208</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Delete</name>
+    <type>Delete</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <commit>1000</commit>
+    <connection>SUPERSET_POSTGRES_LINK</connection>
+    <lookup>
+      <key>
+        <condition>=</condition>
+        <field>id</field>
+        <name>id_lookup</name>
+      </key>
+      <schema>public</schema>
+      <table>f_pietanze</table>
+    </lookup>
+    <attributes/>
+    <GUI>
+      <xloc>2432</xloc>
+      <yloc>224</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>F_pietanze</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>SUPERSET_POSTGRES_LINK</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT 
+	id		as id_lookup
+,	id_ingrediente	as id_ingrediente_postgres
+,	id_spezia	as id_spezia_postgres
+,	id_quantita	as id_quantita_postgres
+FROM f_pietanze</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>1984</xloc>
+      <yloc>208</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Fake data</name>
+    <type>Fake</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>INGREDIENT_NAME</name>
+        <topic>ingredient</topic>
+        <type>Food</type>
+      </field>
+      <field>
+        <name>SPICE_NAME</name>
+        <topic>spice</topic>
+        <type>Food</type>
+      </field>
+      <field>
+        <name>QUANTITY</name>
+        <topic>measurement</topic>
+        <type>Food</type>
+      </field>
+    </fields>
+    <locale>en</locale>
+    <attributes/>
+    <GUI>
+      <xloc>592</xloc>
+      <yloc>416</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Generate rows</name>
+    <type>RowGenerator</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+</fields>
+    <interval_in_ms>5000</interval_in_ms>
+    <last_time_field>FiveSecondsAgo</last_time_field>
+    <limit>${LIMIT_SIZE}</limit>
+    <never_ending>N</never_ending>
+    <row_time_field>now</row_time_field>
+    <attributes/>
+    <GUI>
+      <xloc>400</xloc>
+      <yloc>416</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Insert</name>
+    <type>InsertUpdate</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <commit>1000</commit>
+    <connection>SUPERSET_POSTGRES_LINK</connection>
+    <lookup>
+      <key>
+        <condition>=</condition>
+        <field>id</field>
+        <name>id_lookup</name>
+        <name2/>
+      </key>
+      <key>
+        <condition>=</condition>
+        <field>id_ingrediente</field>
+        <name>id_ingrediente_lookup</name>
+        <name2/>
+      </key>
+      <key>
+        <condition>=</condition>
+        <field>id_quantita</field>
+        <name>id_quantita_lookup</name>
+        <name2/>
+      </key>
+      <key>
+        <condition>=</condition>
+        <field>id_spezia</field>
+        <name>id_spezia_lookup</name>
+        <name2/>
+      </key>
+      <schema>public</schema>
+      <table>f_pietanze</table>
+      <value>
+        <name>id_ingrediente</name>
+        <rename>id_ingrediente_lookup</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>id_quantita</name>
+        <rename>id_quantita_lookup</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>id_spezia</name>
+        <rename>id_spezia_lookup</rename>
+        <update>N</update>
+      </value>
+    </lookup>
+    <update_bypassed>Y</update_bypassed>
+    <attributes/>
+    <GUI>
+      <xloc>2304</xloc>
+      <yloc>416</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Merge join</name>
+    <type>MergeJoin</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <join_type>FULL OUTER</join_type>
+    <keys_1>
+      <key>id_ingrediente_lookup</key>
+      <key>id_quantita_lookup</key>
+      <key>id_spezia_lookup</key>
+    </keys_1>
+    <keys_2>
+      <key>id_ingrediente_postgres</key>
+      <key>id_quantita_postgres</key>
+      <key>id_spezia_postgres</key>
+    </keys_2>
+    <transform1>(SR) LU INGREDIENTI</transform1>
+    <transform2>(SR) INGREDIENTI LU</transform2>
+    <attributes/>
+    <GUI>
+      <xloc>1984</xloc>
+      <yloc>416</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Update</name>
+    <type>Update</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <commit>1000</commit>
+    <connection>SUPERSET_POSTGRES_LINK</connection>
+    <error_ignored>N</error_ignored>
+    <lookup>
+      <key>
+        <condition>=</condition>
+        <field>id</field>
+        <name>id_lookup</name>
+      </key>
+      <schema>public</schema>
+      <table>f_pietanze</table>
+      <value>
+        <name>id_ingrediente</name>
+        <rename>id_ingrediente_lookup</rename>
+      </value>
+      <value>
+        <name>id_quantita</name>
+        <rename>id_quantita_lookup</rename>
+      </value>
+      <value>
+        <name>id_spezia</name>
+        <rename>id_spezia_lookup</rename>
+      </value>
+    </lookup>
+    <skip_lookup>N</skip_lookup>
+    <use_batch>N</use_batch>
+    <attributes/>
+    <GUI>
+      <xloc>2352</xloc>
+      <yloc>320</yloc>
+    </GUI>
+  </transform>
+  <transform_error_handling>
+  </transform_error_handling>
+  <attributes/>
+</pipeline>
