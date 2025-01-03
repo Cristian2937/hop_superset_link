@@ -248,7 +248,8 @@
     "ContextDialogFixedWidth" : "Y",
     "AutoSave" : "Y",
     "CustomParameterMergeJoinSortWarning" : "N",
-    "CustomParameterUniqueSortWarning" : "N"
+    "CustomParameterUniqueSortWarning" : "N",
+    "CustomParameterUsageInfoParameter" : "N"
   },
   "googleDrive" : {
     "credentialsFile" : null,
