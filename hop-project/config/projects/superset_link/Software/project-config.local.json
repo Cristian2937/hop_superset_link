@@ -7,7 +7,7 @@
   "config" : {
     "variables" : [ {
       "name": "LIMIT_SIZE",
-      "value": "50000"
+      "value": "200"
     } ]
 }
 }
