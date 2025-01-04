@@ -249,7 +249,8 @@
     "AutoSave" : "Y",
     "CustomParameterMergeJoinSortWarning" : "N",
     "CustomParameterUniqueSortWarning" : "N",
-    "CustomParameterUsageInfoParameter" : "N"
+    "CustomParameterUsageInfoParameter" : "N",
+    "CustomParameterParallelActionsWarning" : "N"
   },
   "googleDrive" : {
     "credentialsFile" : null,
